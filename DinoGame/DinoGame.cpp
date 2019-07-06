@@ -79,20 +79,14 @@ void DinoGame::modifyGroundBuffer(){
     case 1: chance = 75; break;
     default: chance = 0; //Having more than 2 cactus ground sprites can make the game unfair
   }
-  if(!chance || groundArray[3].type == ground_type::cactus){
+  if(!chance || groundArray[3].type == ground_type::cactus || random(100) < (100 - chance)){ //There is probably a better method but this is the one I came up with
     uint8_t index = ((sizeof(normalGrounds) / sizeof(normalGrounds[0])) * 10);
-    nextGroundElement = (uint16_t*)normalGrounds[random(index) / 10];
+    nextGroundElement = (uint16_t*)normalGrounds[random(100) > 80];
     nextGroundType = ground_type::ground;
-  } else {
-    if(random(100) > (100 - chance)){ //There is probably a better method but this is the one I came up with
-      uint8_t index = ((sizeof(cactusGrounds) / sizeof(cactusGrounds[0])) * 10);
-      nextGroundElement = (uint16_t*)cactusGrounds[random(index) / 10];
-      nextGroundType = ground_type::cactus;
-    } else {
-      uint8_t index = ((sizeof(normalGrounds) / sizeof(normalGrounds[0])) * 10);
-      nextGroundElement = (uint16_t*)normalGrounds[random(index) / 10];
-      nextGroundType = ground_type::ground;
-    }
+  } else { 
+	uint8_t index = ((sizeof(cactusGrounds) / sizeof(cactusGrounds[0])) * 10);
+	nextGroundElement = (uint16_t*)cactusGrounds[random(index) / 10];
+	nextGroundType = ground_type::cactus;
   }
   groundArray[4].set(nextGroundElement, nextGroundType);
 }
